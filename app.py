@@ -11,7 +11,8 @@ import wx.aui
 import wx.lib.agw.aui as aui
 from wx.lib.pubsub import pub
 
-# from pelm.client import LicenseClientManager, ClientFrame
+from crane.panel.main import MainPanel
+
 
 if getattr(sys, 'frozen', False):
     import ctypes
@@ -72,9 +73,6 @@ if __name__ == '__main__':
     # Relative Import Hack
     package_name = 'peui'
 
-    from boaui.main.window import MainWindow
-    from boaui.controller.main import MainController
-    from boaui.model.project import Project
     from boaui.tree.project import ProjectTree
     from boaui.panel.general import GeneralPanel
     from boaui.panel.grid import PropGrid
@@ -91,17 +89,13 @@ if __name__ == '__main__':
 
     from boaui.controller.xlsx import XlsxController, GeneralColumnTable
     from boaui.panel.image import ImageCanvas
+    from boaui.main.window import MainWindow
+
+    from crane.controller.main import CraneController
+    from crane.model.project import CraneProject
 
     import docx
     import docxtpl
-
-    #TODO: Undo-Redo Model
-    #TODO: Cut, Copy & Paste
-    #TODO: Printing Pdf
-    #TODO: Backup Temp File
-    #TODO: Periodic Savings
-    #TODO: Save Perspective View
-    #TODO: Add license manager menu item.
 
     setting = Setting()
 
@@ -109,76 +103,14 @@ if __name__ == '__main__':
         exit()
 
     # Initialize Application
-    if DEBUG:
-        # Use Ctrl-Alt-I to open the Widget Inspection Tool
-        # http://wiki.wxpython.org/Widget%20Inspection%20Tool
-        app = WIT.InspectableApp()
-
-    else:
-        lm = LicenseClientManager()
-        lm.load_private_key(PRIVATE_KEY)
-        lm.load_public_key(PUBLIC_KEY)
-
-        valid_license = False
-
-        app = wx.App(False)
-
-        # Run a loop to check for encryption.
-        while valid_license is False:
-            message = "Please contact joeny.bui@gmail.com and provide the following information. \n"
-
-            # Try to open the three combinations.  If okay than we move on the next steps.
-            if not (lm.open_encrypted_file(setting.efile) and \
-                    lm.open_encrypted_key(setting.ekey) and \
-                    lm.open_encrypted_signature(setting.esignature)):
-                message += "Files path are not valid."
-
-                cf = ClientFrame(None,
-                                 setting,
-                                 title="BOA-GUI License Client",
-                                 message=message,
-                                 size=(400, 400))
-                app.MainLoop()
-
-                # Continue Loop
-                continue
-
-            if lm.unencrypted_file() is False:
-                message += "License files cannot be unencrypted.  Please make contact with the admin."
-
-                cf = ClientFrame(None,
-                                 setting,
-                                 title="BOA-UI License Client",
-                                 message=message,
-                                 size=(400, 400))
-                app.MainLoop()
-
-                # Continue Loop
-                continue
-
-            if (lm.check_username() and
-                    lm.check_system_name() and
-                    lm.check_mac_address() and
-                    lm.check_end_date()) is False:
-                message += "License file is expired.  Please make contact with the admin."
-
-                cf = ClientFrame(None,
-                                 setting,
-                                 title="PEC-GUI License Client",
-                                 message=message,
-                                 size=(400, 400))
-                app.MainLoop()
-
-            valid_license = True
-
-    # splash = SplashScreen(image_path=os.path.join(os.path.dirname(__file__), 'peui', 'splash', 'PEC_SMALL.JPG'),
-    #                       shadowcolour=wx.WHITE,
-    #                       agwStyle=wx.SPLASH_CENTRE_ON_SCREEN | wx.SPLASH_NO_TIMEOUT)
+    # Use Ctrl-Alt-I to open the Widget Inspection Tool
+    # http://wiki.wxpython.org/Widget%20Inspection%20Tool
+    app = WIT.InspectableApp()
 
     # Check if the a file path is passed with the executable.
-    project = Project()
-    controller = MainController(project, master_key=MASTER_KEY, setting=setting)
-    frame = MainWindow(parent=None, controller=controller, title='Sample Editor',
+    project = CraneProject()
+    controller = CraneController(project, master_key=MASTER_KEY, setting=setting)
+    frame = MainWindow(parent=None, controller=controller, title='Crane',
                        style=(wx.DEFAULT_FRAME_STYLE | wx.WS_EX_CONTEXTHELP))
 
     # Set Components.
@@ -234,18 +166,19 @@ if __name__ == '__main__':
     # )
 
     controller.add_page(
+        MainPanel(parent=frame, controller=controller, id=cfg.METHOD_WINDOW_GENERAL),
+        cfg.METHOD_WINDOW_GENERAL,
+        'Main',
+        False
+    )
+
+    controller.add_page(
         Chart2d(frame, controller, None, id=cfg.METHOD_WINDOW_CHART),
         wx.NewId(),
         'Chart',
         True
     )
 
-    controller.add_page(
-        GeneralPanel(parent=frame, id=cfg.METHOD_WINDOW_GENERAL),
-        cfg.METHOD_WINDOW_GENERAL,
-        'General',
-        False
-    )
     # 
     # controller.add_page(
     #     Chart2d(frame, controller,  MultiChart2dController(controller, None, project.data, id=cfg.METHOD_WINDOW_CHART), figsize=(1, 10)),
@@ -269,28 +202,28 @@ if __name__ == '__main__':
     #         ("Q", "Q"))
     # 
     # colLabels = ("1st", "2nd", "3rd", "4th")
-    # data = [
-    #     np.sin(2 * np.pi * np.arange(0.0, 3.0, 0.01)),
-    #     np.sin(0.5 * np.pi * np.arange(0.0, 3.0, 0.01)),
-    #     np.cos(2 * np.pi * np.arange(0.0, 3.0, 0.01)),
-    #     np.cos(7.5 * np.pi * np.arange(0.0, 3.0, 0.01)),
-    # ]
-    # 
-    # table = GeneralColumnTable(data=data)
-    # 
-    # controller.add_page(
-    #     SpreadSheet(controller.notebook,
-    #                 controller,
-    #                 XlsxController(
-    #                     controller,
-    #                     None,
-    #                     table=table,
-    #                     id=cfg.METHOD_WINDOW_XLSX
-    #                 )),
-    #     cfg.METHOD_WINDOW_XLSX,
-    #     'XLSX',
-    #     True
-    # )
+    data = [
+        np.sin(2 * np.pi * np.arange(0.0, 3.0, 0.01)),
+        np.sin(0.5 * np.pi * np.arange(0.0, 3.0, 0.01)),
+        np.cos(2 * np.pi * np.arange(0.0, 3.0, 0.01)),
+        np.cos(7.5 * np.pi * np.arange(0.0, 3.0, 0.01)),
+    ]
+
+    table = GeneralColumnTable(data=data)
+
+    controller.add_page(
+        SpreadSheet(controller.notebook,
+                    controller,
+                    XlsxController(
+                        controller,
+                        None,
+                        table=table,
+                        id=cfg.METHOD_WINDOW_XLSX
+                    )),
+        cfg.METHOD_WINDOW_XLSX,
+        'XLSX',
+        True
+    )
 
     # Load Model
     frame.Show(True)
