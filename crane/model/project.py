@@ -12,21 +12,21 @@ class CraneProject(Project, UnitMap):
         Project.__init__(self, *args, **kwargs)
         UnitMap.__init__(self, src=None)
 
-        self.L = None           # length of structure OB when it is straight
-        self.E = None           # modulus of elasticity of structure OB.
-        self.G = None           # dead weight of structure CB.
-        self.L1 = None          # length of structure OC.
-        self.L2 = None          # length of frame AC which is rigid and perpendicular with OB.
-        self.E1 = None          # modulus of elasticity of cable which is green in fig1.
-        self.rho = None         # mass per unit length of cable, kg/m.
-        self.alpha = None       # angle between the OB and  the ground.
-        self.D = None           # diameter of pulley A whose dead weight is GA.
-        self.D1 = None          # diameter of pulley A1 whose dead weight is GA1.
-        self.D2 = None          # diameter of pulley A2 whose dead weight is GA2.
-        self.L3 = None          # relative distance between A and A1.
-        self.L4 = None          # relative distance between A and A1.
-        self.L5 = None          # length of rod BA2 whose dead weight is Grod and which is rigid.
-        self.G_prime = None     # lifting weight hang on OB. If nothing is being lifted, G' is zero.
+        self.L = 100           # length of structure OB when it is straight
+        self.E = 29000           # modulus of elasticity of structure OB.
+        self.G = 4500           # dead weight of structure CB.
+        self.L1 = 10          # length of structure OC.
+        self.L2 = 20          # length of frame AC which is rigid and perpendicular with OB.
+        self.E1 = 666          # modulus of elasticity of cable which is green in fig1.
+        self.rho = 0.145         # mass per unit length of cable, kg/m.
+        self.alpha = 10       # angle between the OB and  the ground.
+        self.D = 10           # diameter of pulley A whose dead weight is GA.
+        self.D1 = 20          # diameter of pulley A1 whose dead weight is GA1.
+        self.D2 = 5          # diameter of pulley A2 whose dead weight is GA2.
+        self.L3 = 50          # relative distance between A and A1.
+        self.L4 = 100          # relative distance between A and A1.
+        self.L5 = 25          # length of rod BA2 whose dead weight is Grod and which is rigid.
+        self.G_prime = 456     # lifting weight hang on OB. If nothing is being lifted, G' is zero.
 
         self.L_unit = 'ft'
         self.E_unit = 'psi'

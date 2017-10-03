@@ -34,7 +34,23 @@ class MainPanelController(TabPageController):
         pass
 
     def sync_data(self):
-        pass
+        lt = self.view.layouts
+
+        lt['L'].set_value(self.parent.project.L, self.parent.project.L_unit)
+        lt['E'].set_value(self.parent.project.E, self.parent.project.E_unit)
+        lt['G'].set_value(self.parent.project.G, self.parent.project.G_unit)
+        lt['L1'].set_value(self.parent.project.L1, self.parent.project.L1_unit)
+        lt['L2'].set_value(self.parent.project.L2, self.parent.project.L2_unit)
+        lt['E1'].set_value(self.parent.project.E1, self.parent.project.E1_unit)
+        lt['rho'].set_value(self.parent.project.rho, self.parent.project.rho_unit)
+        lt['alpha'].set_value(self.parent.project.alpha, self.parent.project.alpha_unit)
+        lt['D'].set_value(self.parent.project.D, self.parent.project.D_unit)
+        lt['D1'].set_value(self.parent.project.D1, self.parent.project.D1_unit)
+        lt['D2'].set_value(self.parent.project.D2, self.parent.project.D2_unit)
+        lt['L3'].set_value(self.parent.project.L3, self.parent.project.L3_unit)
+        lt['L4'].set_value(self.parent.project.L4, self.parent.project.L4_unit)
+        lt['L5'].set_value(self.parent.project.L5, self.parent.project.L5_unit)
+        lt['G_prime'].set_value(self.parent.project.G_prime, self.parent.project.G_prime_unit)
 
     def bind_handle(self):
         pass
@@ -177,7 +193,7 @@ class MainPanelController(TabPageController):
         box = wx.StaticBox(pnl, wx.ID_ANY, 'Diameter')
         lt = self.view.layouts
 
-        lt['d1'] = FloatInputLayout(
+        lt['D'] = FloatInputLayout(
             box,
             name='Diameter @ A',
             type='length',
@@ -186,7 +202,7 @@ class MainPanelController(TabPageController):
             layout=self.tb_layout
         )
 
-        lt['d2'] = FloatInputLayout(
+        lt['D1'] = FloatInputLayout(
             box,
             name='Diameter @ A1',
             type='length',
@@ -195,7 +211,7 @@ class MainPanelController(TabPageController):
             layout=self.tb_layout
         )
 
-        lt['d3'] = FloatInputLayout(
+        lt['D2'] = FloatInputLayout(
             box,
             name='Diameter @ A2',
             type='length',
@@ -205,9 +221,9 @@ class MainPanelController(TabPageController):
         )
 
         vsizer = wx.StaticBoxSizer(box, wx.VERTICAL)
-        vsizer.Add(lt['d1'], 1, wx.EXPAND | wx.ALL, 0)
-        vsizer.Add(lt['d2'], 1, wx.EXPAND | wx.ALL, 0)
-        vsizer.Add(lt['d3'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['D'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['D1'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['D2'], 1, wx.EXPAND | wx.ALL, 0)
 
         pnl.SetSizer(vsizer)
 
