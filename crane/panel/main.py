@@ -19,6 +19,8 @@ class MainPanel(GeneralPanel):
                               *args,
                               **kwargs)
 
+        self.controller.bind_handles()
+
 
 class MainPanelController(TabPageController):
     """
@@ -52,11 +54,59 @@ class MainPanelController(TabPageController):
         lt['L5'].set_value(self.parent.project.L5, self.parent.project.L5_unit)
         lt['G_prime'].set_value(self.parent.project.G_prime, self.parent.project.G_prime_unit)
 
-    def bind_handle(self):
-        pass
+    def bind_handles(self):
+        lt = self.view.layouts
 
-    def on_click_solve(self, evt):
-        pass
+        lt['btn'].bind_click(self.on_click_solve)
+
+    def on_click_solve(self, event=None):
+        if self.set_component():
+            self.parent.solve_dlg()
+        else:
+            dlg = wx.MessageDialog(self.parent, 'Warning!', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
+
+    def set_component(self):
+        try:
+            lt = self.view.layouts
+            project = self.parent.project
+
+            project.L = lt['L'].textbox.get_value()
+            project.L_unit = lt['L'].postbox.get_value()
+            project.E = lt['E'].textbox.get_value()
+            project.E_unit = lt['E'].postbox.get_value()
+            project.G = lt['G'].textbox.get_value()
+            project.G_unit = lt['G'].postbox.get_value()
+            project.L1 = lt['L1'].textbox.get_value()
+            project.L1_unit = lt['L1'].postbox.get_value()
+            project.L2 = lt['L2'].textbox.get_value()
+            project.L2_unit = lt['L2'].postbox.get_value()
+            project.E1 = lt['E1'].textbox.get_value()
+            project.E1_unit = lt['E1'].postbox.get_value()
+            project.rho = lt['rho'].textbox.get_value()
+            project.rho_unit = lt['rho'].postbox.get_value()
+            project.alpha = lt['alpha'].textbox.get_value()
+            project.alpha_unit = lt['alpha'].postbox.get_value()
+            project.D = lt['D'].textbox.get_value()
+            project.D_unit = lt['D'].postbox.get_value()
+            project.D1 = lt['D1'].textbox.get_value()
+            project.D1_unit = lt['D1'].postbox.get_value()
+            project.D2 = lt['D2'].textbox.get_value()
+            project.D2_unit = lt['D2'].postbox.get_value()
+            project.L3 = lt['L3'].textbox.get_value()
+            project.L3_unit = lt['L3'].postbox.get_value()
+            project.L4 = lt['L4'].textbox.get_value()
+            project.L4_unit = lt['L4'].postbox.get_value()
+            project.L5 = lt['L5'].textbox.get_value()
+            project.L5_unit = lt['L5'].postbox.get_value()
+            project.G_prime = lt['G_prime'].textbox.get_value()
+            project.G_prime_unit = lt['G_prime'].postbox.get_value()
+
+            return True
+
+        except Exception as e:
+            return False
 
     def do_layout(self):
         self.tb_layout = LayoutDimensions(top=2, bottom=2, right=4, left=4,
@@ -72,8 +122,10 @@ class MainPanelController(TabPageController):
         sizer.Add(self.do_layout_diameter(), 0, wx.EXPAND | wx.ALL, 10)
         sizer.Add(self.do_layout_material(), 0, wx.EXPAND | wx.ALL, 10)
         sizer.Add(self.do_layout_load(), 0, wx.EXPAND | wx.ALL, 10)
+        sizer.AddStretchSpacer(1)
 
-        sizer.Add(lt['btn'])
+        sizer.Add(lt['btn'], 0, wx.RIGHT, 10)
+
         return sizer
 
     def do_layout_geometry(self):

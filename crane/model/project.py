@@ -60,3 +60,8 @@ class CraneProject(Project, UnitMap):
             L5=(units.UNIT_LENGTH_KEY, 'L5_unit'),
             G_prime=(units.UNIT_LENGTH_KEY, 'G_prime_unit')
         ))
+
+    def solve(self):
+        import time
+
+        time.sleep(2)
