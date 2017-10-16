@@ -29,24 +29,16 @@ if getattr(sys, 'frozen', False):
 
 DEBUG = True
 
+#TODO: Because matplotlib cannot use thread, we're turning it off for now.
+os.environ['DEBUG_THREAD'] = 'True'
 
 if __name__ == '__main__':
     # Relative Import Hack
     package_name = 'crane'
 
-    from boaui.tree.project import ProjectTree
-    from boaui.panel.general import GeneralPanel
-    from boaui.panel.grid import PropGrid
     from boaui.setting import Setting
-    from boaui.view.vtk import VtkViewer
-    from boaui.view.terminal import Console
-    from boaui.controller.ch2d import MultiChart2dController
-
     import boaui.config as cfg
     from boaui.config import MASTER_KEY, MENU_BAR_KEY, TOOLBAR_FILE_KEY
-    from boaui.main.toolbar import CustomToolBar
-
-    from boaui.panel.image import ImageCanvas
     from boaui.main.window import MainWindow
 
     from crane.controller.main import CraneController
@@ -76,12 +68,6 @@ if __name__ == '__main__':
     controller.set_key(MENU_BAR_KEY)
     controller.bind_all_methods()
 
-    # Add test data
-    project.data = [(np.arange(0.0, 3.0, 0.01), np.sin(2 * np.pi * np.arange(0.0, 3.0, 0.01))),
-                    (np.arange(0.0, 1.5, 0.02), np.cos(2 * np.pi * np.arange(0.0, 1.5, 0.02))),
-                    (np.arange(0.0, 3.0, 0.04), np.cos(1.5 * np.pi * np.arange(0.0, 3.0, 0.04))),
-                    (np.arange(0.0, 2.5, 0.005), np.sin(0.5 * np.pi * np.arange(0.0, 2.5, 0.005)))]
-
     controller.add_pane(
         MainPanel(parent=frame, controller=controller, id=cfg.METHOD_WINDOW_GENERAL, size=wx.Size(500, 500)),
         cfg.METHOD_WINDOW_GENERAL,
@@ -89,7 +75,7 @@ if __name__ == '__main__':
             .Caption('Main')
             .Left()
             .CloseButton(False)
-            .BestSize(600, 800),
+            .BestSize(700, 800),
         False
     )
 
