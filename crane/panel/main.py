@@ -38,19 +38,28 @@ class MainPanelController(TabPageController):
     def sync_data(self):
         lt = self.view.layouts
 
-        lt['L'].set_value(self.parent.project.L, self.parent.project.L_unit)
         lt['E'].set_value(self.parent.project.E, self.parent.project.E_unit)
-        lt['G'].set_value(self.parent.project.G, self.parent.project.G_unit)
+        lt['I'].set_value(self.parent.project.I, self.parent.project.I_unit)
+        lt['L'].set_value(self.parent.project.L, self.parent.project.L_unit)
+        lt['alpha'].set_value(self.parent.project.alpha, self.parent.project.alpha_unit)
         lt['L1'].set_value(self.parent.project.L1, self.parent.project.L1_unit)
         lt['L2'].set_value(self.parent.project.L2, self.parent.project.L2_unit)
-        lt['E1'].set_value(self.parent.project.E1, self.parent.project.E1_unit)
-        lt['rho'].set_value(self.parent.project.rho, self.parent.project.rho_unit)
-        lt['alpha'].set_value(self.parent.project.alpha, self.parent.project.alpha_unit)
+        lt['angle'].set_value(self.parent.project.angle, self.parent.project.angle_unit)
+        lt['L3'].set_value(self.parent.project.L3, self.parent.project.L3_unit)
+        lt['L4'].set_value(self.parent.project.L4, self.parent.project.L4_unit)
         lt['D'].set_value(self.parent.project.D, self.parent.project.D_unit)
         lt['D1'].set_value(self.parent.project.D1, self.parent.project.D1_unit)
         lt['D2'].set_value(self.parent.project.D2, self.parent.project.D2_unit)
-        lt['L3'].set_value(self.parent.project.L3, self.parent.project.L3_unit)
-        lt['L4'].set_value(self.parent.project.L4, self.parent.project.L4_unit)
+        lt['G_a'].set_value(self.parent.project.G_a, self.parent.project.G_a_unit)
+        lt['G_a1'].set_value(self.parent.project.G_a1, self.parent.project.G_a1_unit)
+        lt['G_a2'].set_value(self.parent.project.G_a2, self.parent.project.G_a2_unit)
+        lt['G_ac'].set_value(self.parent.project.G_ac, self.parent.project.G_ac_unit)
+        lt['G_ba2'].set_value(self.parent.project.G_ba2, self.parent.project.G_ba2_unit)
+        lt['G_ob'].set_value(self.parent.project.G_ob, self.parent.project.G_ob_unit)
+        lt['G_tip'].set_value(self.parent.project.G_tip, self.parent.project.G_tip_unit)
+
+        lt['E1'].set_value(self.parent.project.E1, self.parent.project.E1_unit)
+        lt['rho'].set_value(self.parent.project.rho, self.parent.project.rho_unit)
         lt['L5'].set_value(self.parent.project.L5, self.parent.project.L5_unit)
         lt['G_prime'].set_value(self.parent.project.G_prime, self.parent.project.G_prime_unit)
 
@@ -196,14 +205,26 @@ class MainPanelController(TabPageController):
             layout=self.tb_layout
         )
 
+        lt['angle'] = FloatInputLayout(
+            box,
+            name='Angle',
+            type='angle',
+            textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+
+        )
+
         vsizer = wx.StaticBoxSizer(box, wx.VERTICAL)
         vsizer.Add(lt['L'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['alpha'], 1, wx.EXPAND | wx.ALL, 0)
         vsizer.Add(lt['L1'], 1, wx.EXPAND | wx.ALL, 0)
         vsizer.Add(lt['L2'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['L5'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['angle'], 1, wx.EXPAND | wx.ALL, 0)
+
         vsizer.Add(lt['L3'], 1, wx.EXPAND | wx.ALL, 0)
         vsizer.Add(lt['L4'], 1, wx.EXPAND | wx.ALL, 0)
-        vsizer.Add(lt['L5'], 1, wx.EXPAND | wx.ALL, 0)
-        vsizer.Add(lt['alpha'], 1, wx.EXPAND | wx.ALL, 0)
 
         pnl.SetSizer(vsizer)
 
@@ -223,6 +244,15 @@ class MainPanelController(TabPageController):
             layout=self.tb_layout
         )
 
+        lt['I'] = FloatInputLayout(
+            box,
+            name='Modulus of Inertia for Crane',
+            type='inertia',
+            textbox=FloatSmartBox(box, signs=False, exponential=True, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
         lt['E1'] = FloatInputLayout(
             box,
             name='Modulus of Elasticity of Cable',
@@ -234,6 +264,7 @@ class MainPanelController(TabPageController):
 
         vsizer = wx.StaticBoxSizer(box, wx.VERTICAL)
         vsizer.Add(lt['E'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['I'], 1, wx.EXPAND | wx.ALL, 0)
         vsizer.Add(lt['E1'], 1, wx.EXPAND | wx.ALL, 0)
 
         pnl.SetSizer(vsizer)
@@ -286,11 +317,65 @@ class MainPanelController(TabPageController):
         box = wx.StaticBox(pnl, wx.ID_ANY, 'Load')
         lt = self.view.layouts
 
-        lt['G'] = FloatInputLayout(
+        lt['G_a'] = FloatInputLayout(
             box,
             name='Dead Weight of Structure @ CB',
             type='force',
             textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
+        lt['G_a1'] = FloatInputLayout(
+            box,
+            name='Dead Weight of Structure @ CB',
+            type='force',
+            textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
+        lt['G_a2'] = FloatInputLayout(
+            box,
+            name='Dead Weight of Structure @ CB',
+            type='force',
+            textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
+        lt['G_ac'] = FloatInputLayout(
+            box,
+            name='Dead Weight of Structure @ CB',
+            type='force',
+            textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
+        lt['G_ba2'] = FloatInputLayout(
+            box,
+            name='Dead Weight of Structure @ CB',
+            type='force',
+            textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
+        lt['G_ob'] = FloatInputLayout(
+            box,
+            name='Dead Weight of Structure @ CB',
+            type='force',
+            textbox=FloatSmartBox(box, signs=False, exponential=False, enable=True),
+            postbox=SmartComboBox(box, enable=True),
+            layout=self.tb_layout
+        )
+
+        lt['G_tip'] = FloatInputLayout(
+            box,
+            name='Dead Weight of Structure @ CB',
+            type='force',
+            textbox=FloatSmartBox(box, signs=True, exponential=False, enable=True),
             postbox=SmartComboBox(box, enable=True),
             layout=self.tb_layout
         )
@@ -314,7 +399,14 @@ class MainPanelController(TabPageController):
         )
 
         vsizer = wx.StaticBoxSizer(box, wx.VERTICAL)
-        vsizer.Add(lt['G'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_a'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_a1'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_a2'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_ac'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_ba2'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_ob'], 1, wx.EXPAND | wx.ALL, 0)
+        vsizer.Add(lt['G_tip'], 1, wx.EXPAND | wx.ALL, 0)
+
         vsizer.Add(lt['G_prime'], 1, wx.EXPAND | wx.ALL, 0)
         vsizer.Add(lt['rho'], 1, wx.EXPAND | wx.ALL, 0)
 
