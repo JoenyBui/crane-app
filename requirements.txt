@@ -15,7 +15,7 @@ imageio==1.5
 imagesize==0.7.1
 ipaddress==1.0.16
 Jinja2==2.8
-lxml==3.6.1
+lxml==4.6.2
 MarkupSafe==0.23
 matplotlib==1.5.1
 moviepy==0.2.2.11
