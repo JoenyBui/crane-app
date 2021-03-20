@@ -14,7 +14,7 @@ idna==2.1
 imageio==1.5
 imagesize==0.7.1
 ipaddress==1.0.16
-Jinja2==2.8
+Jinja2==2.11.3
 lxml==3.6.1
 MarkupSafe==0.23
 matplotlib==1.5.1
